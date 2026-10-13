@@ -1,0 +1,1727 @@
+{
+  "info": {
+    "_postman_id": "6a4648ba-f991-42cc-88d3-64d409a00d30",
+    "name": "OCT 13th Sprint 8 API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "49643783",
+    "_collection_link": "https://go.postman.co/collection/49643783-6a4648ba-f991-42cc-88d3-64d409a00d30?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Get Authorization",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const response = pm.response.json();\n\npm.test(\"Authentication successful\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Token is returned\", function () {\n    pm.expect(response.token).to.be.a(\"string\").and.not.empty;\n});\n\nif (response.token) {\n    pm.collectionVariables.set(\"authToken\", response.token);\n}\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "email",
+                  "value": "wiley.griffin@testpro.io",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "GuitarL3ss0n1!",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseURL}}/api/me",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "api",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Song Info",
+      "item": [
+        {
+          "name": "Get Song Info",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response body contains expected values\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response.lyrics).to.eql(\"\");\n    pm.expect(response.album_info).to.be.null;\n    pm.expect(response.artist_info).to.be.null;\n    pm.expect(response.youtube).to.be.null;\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/song/da98f9eb65971e2d76d9ec3640bab317/info",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "song",
+                "da98f9eb65971e2d76d9ec3640bab317",
+                "info"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid Method Put",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Status code is 405\", function () {\n    pm.response.to.have.status(405);\n});\n\npm.test(\"Error message is correct\", function () {\n    const response = pm.response.text();\n    pm.expect(response).to.include(\"405 Method Not Allowed\");\n});\n\npm.test(\"HTML error title is correct\", function () {\n    const response = pm.response.text();\n    pm.expect(response).to.include(\n        \"<title>An Error Occurred: Method Not Allowed</title>\"\n    );\n});\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/song/da98f9eb65971e2d76d9ec3640bab317/info",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "song",
+                "da98f9eb65971e2d76d9ec3640bab317",
+                "info"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid Method Post",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Status code is 405\", function () {\n    pm.response.to.have.status(405);\n});\n\npm.test(\"Error message is correct\", function () {\n    const response = pm.response.text();\n    pm.expect(response).to.include(\"405 Method Not Allowed\");\n});\n\npm.test(\"HTML error title is correct\", function () {\n    const response = pm.response.text();\n    pm.expect(response).to.include(\n        \"<title>An Error Occurred: Method Not Allowed</title>\"\n    );\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/song/da98f9eb65971e2d76d9ec3640bab317/info",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "song",
+                "da98f9eb65971e2d76d9ec3640bab317",
+                "info"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid Method Patch",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Status code is 405\", function () {\n    pm.response.to.have.status(405);\n});\n\npm.test(\"Error message is correct\", function () {\n    const response = pm.response.text();\n    pm.expect(response).to.include(\"405 Method Not Allowed\");\n});\n\npm.test(\"HTML error title is correct\", function () {\n    const response = pm.response.text();\n    pm.expect(response).to.include(\n        \"<title>An Error Occurred: Method Not Allowed</title>\"\n    );\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/song/da98f9eb65971e2d76d9ec3640bab317/info",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "song",
+                "da98f9eb65971e2d76d9ec3640bab317",
+                "info"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid Method Del",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Status code is 405\", function () {\n    pm.response.to.have.status(405);\n});\n\npm.test(\"Error message is correct\", function () {\n    const response = pm.response.text();\n    pm.expect(response).to.include(\"405 Method Not Allowed\");\n});\n\npm.test(\"HTML error title is correct\", function () {\n    const response = pm.response.text();\n    pm.expect(response).to.include(\n        \"<title>An Error Occurred: Method Not Allowed</title>\"\n    );\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/song/da98f9eb65971e2d76d9ec3640bab317/info",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "song",
+                "da98f9eb65971e2d76d9ec3640bab317",
+                "info"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "No Song Info",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Status code is 404\", function () {\n    pm.response.to.have.status(404);\n});\n\npm.test(\"Error message is Not Found\", function () {\n    const response = pm.response.text();\n    pm.expect(response).to.include(\n        '<div class=\"title\">Not Found</div>'\n    );\n});\n\npm.test(\"HTML page title is correct\", function () {\n    const response = pm.response.text();\n    pm.expect(response).to.include(\"<title>Not Found</title>\");\n});\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/song//info",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "song",
+                "",
+                "info"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Wrong Song ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 404\", function () {\n    pm.response.to.have.status(404);});\n\npm.test(\"Response body contains 'Not Found'\", function () {\n    pm.expect(pm.response.text()).to.include(\"Not Found\");\n});\npm.test(\"HTML page title is correct\", function () {\n    const response = pm.response.text();\n    pm.expect(response).to.include(\"<title>Not Found</title>\");\n});\npm.test(\"Requested song doesn't exist\", function(){\n    const response = pm.response.text();\n    pm.expect(response).to.include(\"Requested song doesn't exist\");\n});\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/song/da98f9eb65971e2d76d9ec3640bab318/info",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "song",
+                "da98f9eb65971e2d76d9ec3640bab318",
+                "info"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "No Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Unauthenticated request returns 401\", function () {\n    pm.response.to.have.status(401);\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/song/da98f9eb65971e2d76d9ec3640bab317/info",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "song",
+                "da98f9eb65971e2d76d9ec3640bab317",
+                "info"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Unauthenticated request returns 401\", function () {\n    pm.response.to.have.status(401);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "382933|2V0h5OskqMT876y2GJ0fTl6AClzzLAc2SeEDwuR22",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/song/da98f9eb65971e2d76d9ec3640bab317/info",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "song",
+                "da98f9eb65971e2d76d9ec3640bab317",
+                "info"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Increase Play Count",
+      "item": [
+        {
+          "name": "Initial Increase Song Count",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\nconst response = pm.response.json();\n\npm.test(\"Play count is a number\", function () {\n    pm.expect(response.play_count).to.be.a(\"number\");\n});\n\nif (pm.response.code === 200 &&\n    Number.isFinite(response.play_count)) {\n    pm.collectionVariables.set(\n        \"previousPlayCount\",\n        response.play_count\n    );\n}\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"song\":\"da98f9eb65971e2d76d9ec3640bab317\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/play",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "play"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Increase Song Count By 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\nconst response = pm.response.json();\n\npm.test(\"Play count increases by exactly 1\", function () {\n    const storedCount = pm.collectionVariables.get(\n        \"previousPlayCount\"\n    );\n\n    pm.expect(storedCount, \"Baseline count is missing\")\n        .to.not.be.undefined;\n\n    const previousCount = Number(storedCount);\n\n    pm.expect(Number.isFinite(previousCount)).to.be.true;\n    pm.expect(response.play_count).to.eql(previousCount + 1);\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"song\":\"da98f9eb65971e2d76d9ec3640bab317\"}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/play",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "play"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Baseline Multiple Plays",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\nconst response = pm.response.json();\n\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.collectionVariables.set(\n    \"tc03Baseline\",\n    response.play_count\n);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"song\":\"da98f9eb65971e2d76d9ec3640bab317\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/play",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "play"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Second Play",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\nconst response = pm.response.json();\n\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Play count increased by 1\", function () {\n    const previousCount = Number(\n        pm.collectionVariables.get(\"tc03PreviousCount\")\n        ?? pm.collectionVariables.get(\"tc03Baseline\")\n    );\n\n    pm.expect(response.play_count).to.eql(previousCount + 1);\n});\n\nif (pm.response.code === 200) {\n    pm.collectionVariables.set(\n        \"tc03PreviousCount\",\n        response.play_count\n    );\n}\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"song\":\"da98f9eb65971e2d76d9ec3640bab317\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/play",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "play"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Third Play",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\nconst response = pm.response.json();\n\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Play count increased by 1\", function () {\n    const previousCount = Number(\n        pm.collectionVariables.get(\"tc03PreviousCount\")\n        ?? pm.collectionVariables.get(\"tc03Baseline\")\n    );\n\n    pm.expect(response.play_count).to.eql(previousCount + 1);\n});\n\nif (pm.response.code === 200) {\n    pm.collectionVariables.set(\n        \"tc03PreviousCount\",\n        response.play_count\n    );\n}\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"song\":\"da98f9eb65971e2d76d9ec3640bab317\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/play",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "play"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Fourth Play",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\nconst response = pm.response.json();\n\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Play count increased by exactly 3\", function () {\n    const baseline = Number(\n        pm.collectionVariables.get(\"tc03Baseline\")\n    );\n\n    pm.expect(response.play_count).to.eql(baseline + 3);\n});\n\npm.collectionVariables.unset(\"tc03Baseline\");\npm.collectionVariables.unset(\"tc03PreviousCount\");\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"song\":\"da98f9eb65971e2d76d9ec3640bab317\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/play",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "play"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Response Body",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\nconst response = pm.response.json();\n\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response contains correct song ID\", function () {\n    const requestBody = JSON.parse(pm.request.body.raw);\n\n    pm.expect(response.song_id).to.eql(requestBody.song);\n    pm.expect(response.song.id).to.eql(response.song_id);\n});\n\npm.test(\"Response contains valid play count\", function () {\n    pm.expect(response.play_count).to.be.a(\"number\");\n    pm.expect(response.play_count).to.be.at.least(0);\n});\n\npm.test(\"Response contains liked status\", function () {\n    pm.expect(response.liked).to.be.a(\"boolean\");\n});\n\npm.test(\"Response contains correct song information\", function () {\n    pm.expect(response.song).to.be.an(\"object\");\n    pm.expect(response.song.title).to.eql(\"Dark Days\");\n    pm.expect(response.song.album_id).to.be.a(\"number\");\n    pm.expect(response.song.artist_id).to.be.a(\"number\");\n    pm.expect(response.song.length).to.be.a(\"number\");\n    pm.expect(response.song.track).to.be.a(\"number\");\n    pm.expect(response.song.disc).to.be.a(\"number\");\n    pm.expect(response.song.created_at).to.be.a(\"string\");\n});\n\npm.test(\"Response contains valid user information\", function () {\n    pm.expect(response.user).to.be.an(\"object\");\n    pm.expect(response.user.id).to.be.a(\"number\");\n    pm.expect(response.user.name).to.be.a(\"string\");\n    pm.expect(response.user.email).to.be.a(\"string\");\n    pm.expect(response.user.is_admin).to.be.a(\"boolean\");\n});\n\npm.test(\"Response contains user preferences\", function () {\n    pm.expect(response.user.preferences).to.be.an(\"object\");\n    pm.expect(response.user.preferences)\n        .to.have.property(\"lastfm_session_key\");\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"song\":\"da98f9eb65971e2d76d9ec3640bab317\"}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/play",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "play"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid Method GET",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Status code is 405\", function () {\n    pm.response.to.have.status(405);\n});\n\npm.test(\"Error message is Method Not Allowed\", function () {\n    const response = pm.response.text();\n    pm.expect(response).to.include(\"Method Not Allowed\");\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"song\":\"da98f9eb65971e2d76d9ec3640bab317\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/play",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "play"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid Method PUT",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Status code is 405\", function () {\n    pm.response.to.have.status(405);\n});\n\npm.test(\"Error message is Method Not Allowed\", function () {\n    const response = pm.response.text();\n    pm.expect(response).to.include(\"Method Not Allowed\");\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"song\":\"da98f9eb65971e2d76d9ec3640bab317\"}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/play",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "play"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid Method PATCH",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Status code is 405\", function () {\n    pm.response.to.have.status(405);\n});\n\npm.test(\"Error message is Method Not Allowed\", function () {\n    const response = pm.response.text();\n    pm.expect(response).to.include(\"Method Not Allowed\");\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"song\":\"da98f9eb65971e2d76d9ec3640bab317\"}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/play",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "play"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid Method DELETE",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Status code is 405\", function () {\n    pm.response.to.have.status(405);\n});\n\npm.test(\"Error message is Method Not Allowed\", function () {\n    const response = pm.response.text();\n    pm.expect(response).to.include(\"Method Not Allowed\");\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"song\":\"da98f9eb65971e2d76d9ec3640bab317\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/play",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "play"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "No Song ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Missing song ID request is rejected\", function () {\n    pm.expect(pm.response.code).to.be.oneOf([400, 422]);\n});\n\npm.test(\"Response contains validation error\", function () {\n    const contentType = pm.response.headers.get(\"Content-Type\") || \"\";\n\n    pm.expect(contentType).to.include(\"application/json\");\n\n    const response = pm.response.json();\n    pm.expect(JSON.stringify(response).toLowerCase())\n        .to.include(\"song\");\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/play",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "play"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Non Existing Song ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Status code is 404 Not Found\", function () {\n    pm.response.to.have.status(404);\n});\n\npm.test(\"Error message is correct\", function () {\n    const response = pm.response.text();\n\n    pm.expect(response).to.include(\n        \"Requested song doesn't exist\"\n    );\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"song\":\"2298f9eb65971e2d76d9ec3640bab317\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/play",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "play"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "No Bearer Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Status code is 401 Unauthorized\", function () {\n    pm.response.to.have.status(401);\n});\n\npm.test(\"Unauthenticated request is rejected\", function () {\n    pm.expect(pm.response.code).to.not.eql(200);\n});\n\npm.test(\"Response contains authentication error\", function () {\n    const response = pm.response.text().toLowerCase();\n\n    pm.expect(response).to.satisfy(function (text) {\n        return text.includes(\"unauthenticated\") ||\n               text.includes(\"unauthorized\");\n    });\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"song\":\"da98f9eb65971e2d76d9ec3640bab317\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/play",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "play"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid Bearer Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Status code is 401 Unauthorized\", function () {\n    pm.response.to.have.status(401);\n});\n\npm.test(\"Invalid bearer token is rejected\", function () {\n    pm.expect(pm.response.code).to.not.eql(200);\n});\n\npm.test(\"Response contains authentication error\", function () {\n    const response = pm.response.text().toLowerCase();\n\n    pm.expect(response).to.satisfy(function (text) {\n        return text.includes(\"unauthenticated\") ||\n               text.includes(\"unauthorized\") ||\n               text.includes(\"invalid token\");\n    });\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "invalid_token_123",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"song\":\"da98f9eb65971e2d76d9ec3640bab317\"}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/play",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "play"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Recently Played Songs",
+      "item": [
+        {
+          "name": "Initial Play",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Status code is 200 OK\", function () {\n    pm.response.to.have.status(200);\n});\n\nconst response = pm.response.json();\nconst requestBody = JSON.parse(pm.request.body.raw);\n\npm.test(\"Played song ID matches request\", function () {\n    pm.expect(response.song_id).to.eql(requestBody.song);\n});\n\npm.test(\"Play count is valid\", function () {\n    pm.expect(response.play_count).to.be.a(\"number\");\n});\n\n// Save the played song ID for later tests\nif (pm.response.code === 200 &&\n    response.song_id === requestBody.song) {\n    pm.collectionVariables.set(\"lastPlayedSongId\", response.song_id);\n}\n\nconsole.log(\"Saved song ID:\", pm.collectionVariables.get(\"lastPlayedSongId\"));\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"song\":\"f09ec23a3cc6b9e5ee419f2ae86a10e9\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/play",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "play"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Recently Played Song",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {\n    pm.response.to.have.status(200);\n});\n\nconst response = pm.response.json();\n\npm.test(\"Response is a JSON array\", function () {\n    pm.expect(response).to.be.an(\"array\");\n});\n\npm.test(\"Recently played songs contain valid IDs\", function () {\n    pm.expect(response.length).to.be.greaterThan(0);\n\n    response.forEach(function (songId) {\n        pm.expect(songId).to.be.a(\"string\").and.not.empty;\n    });\n});\n\n// Save the number of recently played songs\npm.collectionVariables.set(\"recentlyPlayedCount\", response.length);\n\nconsole.log(\"Saved recently played count:\", response.length);\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/recently-played",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "recently-played"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "0 Count Recently Played Songs",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Count 0 returns all recently played songs\", function () {\n    const songs = pm.response.json();\n    const expectedCount = Number(\n        pm.collectionVariables.get(\"recentlyPlayedCount\")\n    );\n\n    pm.expect(songs).to.be.an(\"array\");\n    pm.expect(songs.length).to.eql(expectedCount);\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/recently-played/0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "recently-played",
+                "0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "5 Recently Played Songs",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"song\": \"e5e1966c8d77a319d35babbec96296df\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/recently-played/5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "recently-played",
+                "5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "100 Recently Played Songs",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Returns all available songs up to 100\", function () {\n    const songs = pm.response.json();\n    const totalSongs = Number(\n        pm.collectionVariables.get(\"recentlyPlayedCount\")\n    );\n\n    pm.expect(songs).to.be.an(\"array\");\n    pm.expect(Number.isFinite(totalSongs)).to.be.true;\n\n    const expectedCount = Math.min(totalSongs, 100);\n\n    pm.expect(songs.length).to.eql(expectedCount);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/recently-played/100",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "recently-played",
+                "100"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "1 Recently Played Song",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Status code is 200 OK\", function () {\n    pm.response.to.have.status(200);\n});\n\nconst response = pm.response.json();\n\npm.test(\"Response is a JSON array\", function () {\n    pm.expect(response).to.be.an(\"array\");\n});\n\npm.test(\"Returns exactly 1 recently played song\", function () {\n    pm.expect(response.length).to.eql(1);\n});\n\npm.test(\"Returned song ID is valid\", function () {\n    pm.expect(response[0]).to.be.a(\"string\").and.not.empty;\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/recently-played/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "recently-played",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Unauthorized Recently Played Song",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Status code is 401 Unauthorized\", function () {\n    pm.response.to.have.status(401);\n});\n\npm.test(\"Unauthenticated request is rejected\", function () {\n    pm.expect(pm.response.code).to.not.eql(200);\n});\n\npm.test(\"Response does not expose recently played songs\", function () {\n    const response = pm.response.text();\n\n    if (pm.response.headers.get(\"Content-Type\")?.includes(\"application/json\")) {\n        const body = pm.response.json();\n        pm.expect(body).to.not.be.an(\"array\");\n    }\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/recently-played",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "recently-played"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid Bearer Token Recently Played Song",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Status code is 401 Unauthorized\", function () {\n    pm.response.to.have.status(401);\n});\n\npm.test(\"Invalid bearer token is rejected\", function () {\n    pm.expect(pm.response.code).to.not.eql(200);\n});\n\npm.test(\"Response does not expose recently played songs\", function () {\n    const contentType = pm.response.headers.get(\"Content-Type\") || \"\";\n\n    if (contentType.includes(\"application/json\")) {\n        const response = pm.response.json();\n        pm.expect(response).to.not.be.an(\"array\");\n    }\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "invalid_bearer_token_123",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/recently-played",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "recently-played"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid Count Non Numeric Recently Played Song",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Status code is 404 Not Found\", function () {\n    pm.response.to.have.status(404);\n});\n\npm.test(\"Invalid count request is rejected\", function () {\n    pm.expect(pm.response.code).to.not.eql(200);\n});\n\npm.test(\"Response does not contain a list of songs\", function () {\n    const contentType = pm.response.headers.get(\"Content-Type\") || \"\";\n\n    if (contentType.includes(\"application/json\")) {\n        const response = pm.response.json();\n        pm.expect(response).to.not.be.an(\"array\");\n    }\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/recently-played/abc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "recently-played",
+                "abc"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid Count Negative Number Recently Played Song",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Status code is 404 Not Found\", function () {\n    pm.response.to.have.status(404);\n});\n\npm.test(\"Negative count request is rejected\", function () {\n    pm.expect(pm.response.code).to.not.eql(200);\n});\n\npm.test(\"Response does not contain a list of songs\", function () {\n    const contentType = pm.response.headers.get(\"Content-Type\") || \"\";\n\n    if (contentType.includes(\"application/json\")) {\n        const response = pm.response.json();\n        pm.expect(response).to.not.be.an(\"array\");\n    }\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/recently-played/-5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "recently-played",
+                "-5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST Invalid Method Recently Played Song",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Status code is 405 Method Not Allowed\", function () {\n    pm.response.to.have.status(405);\n});\n\npm.test(\"Response contains Method Not Allowed error\", function () {\n    const response = pm.response.text();\n\n    pm.expect(response).to.include(\"Method Not Allowed\");\n});\n\npm.test(\"Invalid HTTP method is rejected\", function () {\n    pm.expect(pm.response.code).to.not.eql(200);\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/recently-played",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "recently-played"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT Invalid Method Recently Played Song",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Status code is 405 Method Not Allowed\", function () {\n    pm.response.to.have.status(405);\n});\n\npm.test(\"Response contains Method Not Allowed error\", function () {\n    const response = pm.response.text();\n\n    pm.expect(response).to.include(\"Method Not Allowed\");\n});\n\npm.test(\"Invalid HTTP method is rejected\", function () {\n    pm.expect(pm.response.code).to.not.eql(200);\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/recently-played",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "recently-played"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH Invalid Method Recently Played Song",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Status code is 405 Method Not Allowed\", function () {\n    pm.response.to.have.status(405);\n});\n\npm.test(\"Response contains Method Not Allowed error\", function () {\n    const response = pm.response.text();\n\n    pm.expect(response).to.include(\"Method Not Allowed\");\n});\n\npm.test(\"Invalid HTTP method is rejected\", function () {\n    pm.expect(pm.response.code).to.not.eql(200);\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/recently-played",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "recently-played"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE Invalid Method Recently Played Song",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\npm.test(\"Status code is 405 Method Not Allowed\", function () {\n    pm.response.to.have.status(405);\n});\n\npm.test(\"Response contains Method Not Allowed error\", function () {\n    const response = pm.response.text();\n\n    pm.expect(response).to.include(\"Method Not Allowed\");\n});\n\npm.test(\"Invalid HTTP method is rejected\", function () {\n    pm.expect(pm.response.code).to.not.eql(200);\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/interaction/recently-played",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "recently-played"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "authToken",
+      "value": ""
+    },
+    {
+      "key": "previousPlayCount",
+      "value": ""
+    },
+    {
+      "key": "previousSongCount",
+      "value": ""
+    },
+    {
+      "key": "lastPlayedSongId",
+      "value": ""
+    },
+    {
+      "key": "recentlyPlayedCount",
+      "value": ""
+    }
+  ]
+}
