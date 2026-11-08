@@ -1,0 +1,701 @@
+{
+  "info": {
+    "_postman_id": "8df59652-7f11-4e12-9ef6-aefcac048265",
+    "name": "Sprint 12 Like and Unlike Songs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "49643783",
+    "_collection_link": "https://go.postman.co/collection/49643783-8df59652-7f11-4e12-9ef6-aefcac048265?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Authenticate",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const response = pm.response.json();\n\npm.test(\"Authentication successful\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Token is returned\", function () {\n    pm.expect(response.token).to.be.a(\"string\").and.not.empty;\n});\n\nif (response.token) {\n    pm.collectionVariables.set(\"authToken\", response.token);\n}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "email",
+                  "value": "wiley.griffin@testpro.io",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "GuitarL3ss0n1!",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseURL}}/api/me",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "api",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Like or Unlike a Song",
+      "item": [
+        {
+          "name": "Like Song",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const response = pm.response.json();\n\n// Verify 200 OK\npm.test(\"Status code is 200 OK\", function () {\n    pm.response.to.have.status(200);\n});\n\n// Verify song_id is returned\npm.test(\"Song ID is returned\", function () {\n    pm.expect(response.song_id).to.be.a(\"string\").and.not.empty;\n});\n\n// Verify song is liked\npm.test(\"Song liked is true\", function () {\n    pm.expect(response.liked).to.eql(true);\n});\n\n// Verify play_count is a valid number\npm.test(\"Play count is a valid number\", function () {\n    pm.expect(response.play_count).to.be.a(\"number\");\n    pm.expect(response.play_count).to.be.at.least(0);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"song\": \"da98f9eb65971e2d76d9ec3640bab317\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/api/interaction/like",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "like"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Unlike Song",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const response = pm.response.json();\n\n// Verify 200 OK\npm.test(\"Status code is 200 OK\", function () {\n    pm.response.to.have.status(200);\n});\n\n// Verify song_id is returned\npm.test(\"Song ID is returned\", function () {\n    pm.expect(response.song_id).to.be.a(\"string\").and.not.empty;\n});\n\n// Verify song is liked\npm.test(\"Song unliked is true\", function () {\n    pm.expect(response.liked).to.eql(false);\n});\n\n// Verify play_count is a valid number\npm.test(\"Play count is a valid number\", function () {\n    pm.expect(response.play_count).to.be.a(\"number\");\n    pm.expect(response.play_count).to.be.at.least(0);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"song\": \"da98f9eb65971e2d76d9ec3640bab317\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/api/interaction/like",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "like"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid Song ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Verify 404 Not Found\npm.test(\"Status code is 404 Not Found\", function () {\n    pm.response.to.have.status(404);\n});\n\n// Verify error message\npm.test(\"Error message: Requested song doesn’t exist\", function () {\n    const response = pm.response.json();\n    pm.expect(response.message).to.eql(\"Requested song doesn’t exist\");\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"song\": \"da98f9eb65971e2d76d9ec3640bab318\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/api/interaction/like",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "like"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Verify 401 Unauthorized\npm.test(\"Status code is 401 Unauthorized\", function () {\n    pm.response.to.have.status(401);\n});\n\n// Verify request was rejected\npm.test(\"Invalid token is rejected\", function () {\n    pm.expect(pm.response.code).to.eql(401);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "invalidToken",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"song\": \"da98f9eb65971e2d76d9ec3640bab3187\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/api/interaction/like",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "like"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid Method",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Verify 405 Method Not Allowed\npm.test(\"Status code is 405 Method Not Allowed\", function () {\n    pm.response.to.have.status(405);\n});\n\n// Verify request method was rejected\npm.test(\"Invalid HTTP method is rejected\", function () {\n    pm.expect(pm.response.code).to.eql(405);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"song\": \"da98f9eb65971e2d76d9ec3640bab317\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/api/interaction/like",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "like"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Like multiple songs",
+      "item": [
+        {
+          "name": "Like multiple songs",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const response = pm.response.json();\n\n// Verify 200 OK\npm.test(\"Status code is 200 OK\", function () {\n    pm.response.to.have.status(200);\n});\n\n// Verify response is an array\npm.test(\"Response contains an array of songs\", function () {\n    pm.expect(response).to.be.an(\"array\").that.is.not.empty;\n});\n\n// Verify multiple songs are returned\npm.test(\"Multiple songs are returned\", function () {\n    pm.expect(response.length).to.be.greaterThan(1);\n});\n\n// Verify each song has a valid song_id\npm.test(\"All songs have valid song IDs\", function () {\n    response.forEach(function (item) {\n        pm.expect(item.song_id).to.be.a(\"string\").and.not.empty;\n    });\n});\n\n// Verify all songs are liked\npm.test(\"All songs are liked\", function () {\n    response.forEach(function (item) {\n        pm.expect(item.liked).to.eql(true);\n    });\n});\n\n// Verify play_count is valid\npm.test(\"All songs have valid play counts\", function () {\n    response.forEach(function (item) {\n        pm.expect(item.play_count).to.be.a(\"number\");\n        pm.expect(item.play_count).to.be.at.least(0);\n    });\n});\n\n// Verify song details are returned\npm.test(\"All songs contain valid song details\", function () {\n    response.forEach(function (item) {\n        pm.expect(item.song).to.be.an(\"object\");\n        pm.expect(item.song.title).to.be.a(\"string\").and.not.empty;\n        pm.expect(item.song.id).to.eql(item.song_id);\n    });\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"songs\": [\"2c51d96b101db143f4d55151101f5b3c\", \"f09ec23a3cc6b9e5ee419f2ae86a10e9\",\"e5e1966c8d77a319d35babbec96296df\"]}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/api/interaction/batch/like",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "batch",
+                "like"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Like Multiple Songs with Invalid Song ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Verify 404 Not Found\npm.test(\"Status code is 404 Not Found\", function () {\n    pm.response.to.have.status(404);\n});\n\n// Verify error message\npm.test(\"Error message: Requested song doesn’t exist\", function () {\n    const response = pm.response.json();\n    pm.expect(response.message).to.eql(\"Requested song doesn’t exist\");\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {token}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"songs\": [\"2c51d96b101db143f4d55151101f5b3d\", \"f09ec23a3cc6b9e5ee419f2ae86a10e9\",\"e5e1966c8d77a319d35babbec96296df\"]}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/api/interaction/batch/like",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "batch",
+                "like"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Like Multiple Songs with Invalid Method",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Verify 405 Method Not Allowed\npm.test(\"Status code is 405 Method Not Allowed\", function(){\n    pm.response.to.have.status(405)\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "invalidToken",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"songs\": [\"2c51d96b101db143f4d55151101f5b3c\", \"f09ec23a3cc6b9e5ee419f2ae86a10e9\",\"e5e1966c8d77a319d35babbec96296df\"]}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/api/interaction/batch/like",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "batch",
+                "like"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Like Multiple Song with Invalid Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Verify 401 Unauthorized\npm.test(\"Status code is 401 Unauthorized\", function(){\n    pm.response.to.have.status(401);\n    });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "invalidToken",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {token}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"songs\": [\"2c51d96b101db143f4d55151101f5b3c\", \"f09ec23a3cc6b9e5ee419f2ae86a10e9\",\"e5e1966c8d77a319d35babbec96296df\"]}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/api/interaction/batch/like",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "batch",
+                "like"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Unlike Multiple Songs",
+      "item": [
+        {
+          "name": "Unlike Multiple Songs",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response contains JSON\", function () {\n    pm.expect(pm.response.text()).to.not.be.empty;\n    pm.expect(pm.response.headers.get(\"Content-Type\"))\n        .to.include(\"application/json\");\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {token}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"songs\": [\"2c51d96b101db143f4d55151101f5b3c\", \"f09ec23a3cc6b9e5ee419f2ae86a10e9\",\"e5e1966c8d77a319d35babbec96296df\"]}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/api/interaction/batch/unlike",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "batch",
+                "unlike"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Unlike Multiple Songs with Invalid Song ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Verify 404 Not Found\npm.test(\"Status code is 404 Not Found\", function () {\n    pm.response.to.have.status(404);\n});\n\n// Verify error message\npm.test(\"Error message: Requested song doesn’t exist\", function () {\n    const response = pm.response.json();\n    pm.expect(response.message).to.eql(\"Requested song doesn’t exist\");\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"songs\": [\"2c51d96b101db143f4d55151101f5b3d\", \"f09ec23a3cc6b9e5ee419f2ae86a10e9\",\"e5e1966c8d77a319d35babbec96296df\"]}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/api/interaction/batch/unlike",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "batch",
+                "unlike"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Unlike Multiple Songs with Invalid Method",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Verify 405 Method Not Allowed\npm.test(\"Status code is 405 Method Not Allowed\", function(){\n    pm.response.to.have.status(405)\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {token}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"songs\": [\"2c51d96b101db143f4d55151101f5b3c\", \"f09ec23a3cc6b9e5ee419f2ae86a10e9\",\"e5e1966c8d77a319d35babbec96296df\"]}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/api/interaction/batch/unlike",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "batch",
+                "unlike"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Unlike Multiple Songs with Invalid Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Verify 401 Unauthorized\npm.test(\"Status code is 401 Unauthorized\", function(){\n    pm.response.to.have.status(401);\n    });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "invalidToken",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {token}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"songs\": [\"2c51d96b101db143f4d55151101f5b3c\", \"f09ec23a3cc6b9e5ee419f2ae86a10e9\",\"e5e1966c8d77a319d35babbec96296df\"]}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/api/interaction/batch/unlike",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "api",
+                "interaction",
+                "batch",
+                "unlike"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "authToken",
+      "value": ""
+    }
+  ]
+}
