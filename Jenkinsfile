@@ -15,29 +15,33 @@ pipeline {
 
         stage('Run Original API Tests') {
             steps {
-                sh '''
-                    ./node_modules/.bin/newman run collections/Koel-API.postman_collection.json \
-                    -e environments/QA.postman_environment.json \
-                    --env-var "baseUrl=https://qa.koel.app" \
-                    --env-var "baseURL=https://qa.koel.app" \
-                    --ignore-redirects \
-                    -r cli,junit \
-                    --reporter-junit-export newman-original-results.xml
-                '''
+                catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                    sh '''
+                        ./node_modules/.bin/newman run collections/Koel-API.postman_collection.json \
+                        -e environments/QA.postman_environment.json \
+                        --env-var "baseUrl=https://qa.koel.app" \
+                        --env-var "baseURL=https://qa.koel.app" \
+                        --ignore-redirects \
+                        -r cli,junit \
+                        --reporter-junit-export newman-original-results.xml
+                    '''
+                }
             }
         }
 
         stage('Run Sprint 12 API Tests') {
             steps {
-                sh '''
-                    ./node_modules/.bin/newman run collections/Sprint12-Like-Unlike-Songs.postman_collection.json \
-                    -e environments/QA.postman_environment.json \
-                    --env-var "baseUrl=https://qa.koel.app" \
-                    --env-var "baseURL=https://qa.koel.app" \
-                    --ignore-redirects \
-                    -r cli,junit \
-                    --reporter-junit-export newman-sprint12-results.xml
-                '''
+                catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                    sh '''
+                        ./node_modules/.bin/newman run collections/Sprint12-Like-Unlike-Songs.postman_collection.json \
+                        -e environments/QA.postman_environment.json \
+                        --env-var "baseUrl=https://qa.koel.app" \
+                        --env-var "baseURL=https://qa.koel.app" \
+                        --ignore-redirects \
+                        -r cli,junit \
+                        --reporter-junit-export newman-sprint12-results.xml
+                    '''
+                }
             }
         }
     }
